@@ -42,17 +42,15 @@ RUN set -eux; \
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Install uv (latest) using official installer and create isolated venv
-RUN curl -sL https://astral.sh/uv/install.sh | sh \
-    && ln -s /root/.local/bin/uv /usr/local/bin/uv \
-    && ln -s /root/.local/bin/uvx /usr/local/bin/uvx \
-    && uv venv /opt/venv
+# Create an isolated Python venv and install comfy-cli via pip
+RUN python3.12 -m venv /opt/venv
 
-# Use the virtual environment for all subsequent commands
+# Activate that venv for all following RUN steps
 ENV PATH="/opt/venv/bin:${PATH}"
 
-# Install comfy-cli + dependencies needed by it to install ComfyUI
-RUN uv pip install comfy-cli pip setuptools wheel
+# Upgrade pip/setuptools/wheel and install comfy-cli
+RUN pip install --upgrade pip setuptools wheel \
+    && pip install comfy-cli
 
 # Install ComfyUI
 RUN if [ -n "${CUDA_VERSION_FOR_COMFY}" ]; then \
