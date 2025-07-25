@@ -2,9 +2,10 @@
 
 # ─────────────────────────────────────────────────────────────
 # Link network-volume ComfyUI resources into installed ComfyUI
-ln -sf /runpod-volume/workspace/ComfyUI/models       /comfyui/models
-ln -sf /runpod-volume/workspace/ComfyUI/custom_nodes /comfyui/custom_nodes
-ln -sf /runpod-volume/workspace/ComfyUI/output       /comfyui/output
+# Fix path - remove '/workspace' since your storage shows /runpod-volume/ComfyUI directly
+ln -sf /runpod-volume/ComfyUI/models       /comfyui/models
+ln -sf /runpod-volume/ComfyUI/custom_nodes /comfyui/custom_nodes
+ln -sf /runpod-volume/ComfyUI/output       /comfyui/output
 # ─────────────────────────────────────────────────────────────
 
 # Use libtcmalloc for better memory management

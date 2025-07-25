@@ -5,7 +5,7 @@ ARG BASE_IMAGE=nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04
 FROM ${BASE_IMAGE} AS base
 
 # Build arguments for this stage (defaults provided by docker-bake.hcl)
-ARG COMFYUI_VERSION
+ARG COMFYUI_VERSION=latest
 ARG CUDA_VERSION_FOR_COMFY
 ARG ENABLE_PYTORCH_UPGRADE
 ARG PYTORCH_INDEX_URL
@@ -18,6 +18,9 @@ ENV PIP_PREFER_BINARY=1
 ENV PYTHONUNBUFFERED=1
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
+
+# NVIDIA 저장소 비활성화 (문제 회피)
+RUN rm -f /etc/apt/sources.list.d/cuda*.list /etc/apt/sources.list.d/nvidia*.list || true
 
 # Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
@@ -63,8 +66,8 @@ RUN if [ "$ENABLE_PYTORCH_UPGRADE" = "true" ]; then \
 # Change working directory to ComfyUI
 WORKDIR /comfyui
 
-# Support for the network volume
-ADD src/extra_model_paths.yaml ./
+# Support for the network volume (disabled - using symbolic links instead)
+# ADD src/extra_model_paths.yaml ./
 
 # Go back to the root
 WORKDIR /

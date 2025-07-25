@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__brave-search__brave_web_search"
+    ],
+    "deny": []
+  }
+}
