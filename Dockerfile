@@ -20,38 +20,34 @@ ENV PYTHONUNBUFFERED=1
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
 # Install Python, git and other necessary tools
-RUN set -eux; \
-    # 깨진 인덱스 캐시 삭제 후 재시도
-    rm -rf /var/lib/apt/lists/*; \
-    for i in 1 2 3; do \
-      apt-get update && \
-      apt-get install -y --no-install-recommends --fix-missing \
-        python3.12 python3.12-venv git wget \
-        curl \
-        libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 ffmpeg && break; \
-      echo "apt-get failed, retrying ($i/3)" >&2; \
-      sleep 5; \
-    done; \
-    # 심볼릭 링크
-    ln -sf /usr/bin/python3.12 /usr/bin/python; \
-    ln -sf /usr/bin/pip3 /usr/bin/pip; \
-    # 정리
-    apt-get clean; \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    python3.12 \
+    python3.12-venv \
+    git \
+    wget \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    ffmpeg \
+    && ln -sf /usr/bin/python3.12 /usr/bin/python \
+    && ln -sf /usr/bin/pip3 /usr/bin/pip
 
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Create an isolated Python venv and install comfy-cli via pip
-RUN python3.12 -m venv /opt/venv
+# Install uv (latest) using official installer and create isolated venv
+RUN wget -qO- https://astral.sh/uv/install.sh | sh \
+    && ln -s /root/.local/bin/uv /usr/local/bin/uv \
+    && ln -s /root/.local/bin/uvx /usr/local/bin/uvx \
+    && uv venv /opt/venv
 
-# Activate that venv for all following RUN steps
+# Use the virtual environment for all subsequent commands
 ENV PATH="/opt/venv/bin:${PATH}"
 
-# Upgrade pip/setuptools/wheel and install comfy-cli
-RUN pip install --upgrade pip setuptools wheel \
-    && pip install comfy-cli
-
+# Install comfy-cli + dependencies needed by it to install ComfyUI
+RUN uv pip install comfy-cli pip setuptools wheel
 # Install ComfyUI
 RUN if [ -n "${CUDA_VERSION_FOR_COMFY}" ]; then \
       /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" --cuda-version "${CUDA_VERSION_FOR_COMFY}" --nvidia; \
