@@ -27,6 +27,7 @@ RUN set -eux; \
       apt-get update && \
       apt-get install -y --no-install-recommends --fix-missing \
         python3.12 python3.12-venv git wget \
+        curl \
         libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 ffmpeg && break; \
       echo "apt-get failed, retrying ($i/3)" >&2; \
       sleep 5; \
@@ -42,7 +43,7 @@ RUN set -eux; \
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Install uv (latest) using official installer and create isolated venv
-RUN wget -qO- https://astral.sh/uv/install.sh | sh \
+RUN curl -sL https://astral.sh/uv/install.sh | sh \
     && ln -s /root/.local/bin/uv /usr/local/bin/uv \
     && ln -s /root/.local/bin/uvx /usr/local/bin/uvx \
     && uv venv /opt/venv
