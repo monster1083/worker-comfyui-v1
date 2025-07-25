@@ -8,14 +8,14 @@ ls -la /runpod-volume/ComfyUI/ || echo "ERROR: /runpod-volume/ComfyUI not found"
 ls -la /runpod-volume/ComfyUI/models/ || echo "ERROR: /runpod-volume/ComfyUI/models not found"
 
 # Link network-volume ComfyUI resources into installed ComfyUI
-echo "worker-comfyui: Creating symbolic links..."
-ln -sf /runpod-volume/ComfyUI/models       /comfyui/models
+# echo "worker-comfyui: Creating symbolic links..."
+# ln -sf /runpod-volume/ComfyUI/models       /comfyui/models
 ln -sf /runpod-volume/ComfyUI/custom_nodes /comfyui/custom_nodes
 ln -sf /runpod-volume/ComfyUI/output       /comfyui/output
 
 # Verify links were created
-echo "worker-comfyui: Verifying symbolic links..."
-ls -la /comfyui/models || echo "ERROR: /comfyui/models link failed"
+# echo "worker-comfyui: Verifying symbolic links..."
+# ls -la /comfyui/models || echo "ERROR: /comfyui/models link failed"
 ls -la /comfyui/custom_nodes || echo "ERROR: /comfyui/custom_nodes link failed"
 ls -la /comfyui/output || echo "ERROR: /comfyui/output link failed"
 # ─────────────────────────────────────────────────────────────
