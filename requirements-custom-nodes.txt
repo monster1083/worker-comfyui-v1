@@ -1,0 +1,29 @@
+# Custom nodes dependencies
+# Core dependencies
+opencv-python
+gguf
+numba
+piexif
+
+# Machine learning and scientific computing
+scikit-image
+accelerate
+
+# Utilities
+simpleeval
+
+# Hugging Face compatibility fix
+huggingface_hub<0.20
+
+# Additional packages that might be needed by various custom nodes
+# (uncomment as needed)
+# transformers
+# diffusers
+# matplotlib
+# pillow
+# requests
+# websocket-client
+# lark
+# scipy
+# numpy
+# pandas

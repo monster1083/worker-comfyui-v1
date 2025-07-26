@@ -75,8 +75,9 @@ WORKDIR /
 # Install Python runtime dependencies for the handler
 RUN uv pip install runpod requests websocket-client
 
-# Install common dependencies for custom nodes
-RUN uv pip install opencv-python gguf numba piexif
+# Copy and install common dependencies for custom nodes
+COPY requirements-custom-nodes.txt /tmp/requirements-custom-nodes.txt
+RUN uv pip install -r /tmp/requirements-custom-nodes.txt
 RUN wget -O /tmp/nunchaku-0.3.1+torch2.7-cp311-cp311-linux_x86_64.whl "https://github.com/nunchaku-tech/nunchaku/releases/download/v0.3.1/nunchaku-0.3.1+torch2.7-cp311-cp311-linux_x86_64.whl" && \
     uv pip install /tmp/nunchaku-0.3.1+torch2.7-cp311-cp311-linux_x86_64.whl --force-reinstall --no-deps && \
     rm /tmp/nunchaku-0.3.1+torch2.7-cp311-cp311-linux_x86_64.whl
