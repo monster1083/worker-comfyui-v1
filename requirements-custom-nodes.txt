@@ -13,11 +13,11 @@ accelerate
 simpleeval
 
 # Hugging Face compatibility fix
-huggingface_hub<0.20
+huggingface_hub
 
 # Additional packages that might be needed by various custom nodes
 # (uncomment as needed)
-# transformers
+transformers
 # diffusers
 # matplotlib
 # pillow
