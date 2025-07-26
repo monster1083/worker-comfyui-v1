@@ -1,5 +1,16 @@
 runpod_worker_comfy:
-  base_path: /runpod-volume/ComfyUI/
-  models: models/
-  custom_nodes: custom_nodes/
-  output: output/
+  base_path: /runpod-volume/ComfyUI/models
+  checkpoints: checkpoints/
+  clip: clip/
+  clip_vision: clip_vision/
+  configs: configs/
+  controlnet: controlnet/
+  embeddings: embeddings/
+  loras: loras/
+  upscale_models: upscale_models/
+  vae: vae/
+  unet: unet/
+  diffusion_models: diffusion_models/
+  text_encoders: text_encoders/
+  custom_nodes: /runpod-volume/ComfyUI/custom_nodes/
+  output: /runpod-volume/ComfyUI/output/
