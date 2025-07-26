@@ -76,7 +76,8 @@ WORKDIR /
 RUN uv pip install runpod requests websocket-client
 
 # Install common dependencies for custom nodes
-RUN uv pip install opencv-python gguf numba piexif https://github.com/nunchaku-tech/nunchaku/releases/download/v0.3.1/nunchaku-0.3.1+torch2.7-cp311-cp311-linux_x86_64.whl
+RUN uv pip install opencv-python gguf numba piexif
+RUN uv pip install "https://github.com/nunchaku-tech/nunchaku/releases/download/v0.3.1/nunchaku-0.3.1+torch2.7-cp311-cp311-linux_x86_64.whl"
 
 # Add application code and scripts
 ADD src/start.sh handler.py test_input.json ./
