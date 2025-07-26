@@ -3,19 +3,41 @@
 # ─────────────────────────────────────────────────────────────
 # Debug: Check if storage paths exist
 echo "worker-comfyui: Checking storage paths..."
+
+echo "ls -la /runpod-volume/"
 ls -la /runpod-volume/ || echo "ERROR: /runpod-volume not found"
+echo "ls -la /runpod-volume/ComfyUI"
 ls -la /runpod-volume/ComfyUI/ || echo "ERROR: /runpod-volume/ComfyUI not found"
 
-# Link network-volume ComfyUI resources into installed ComfyUI
-echo "worker-comfyui: Creating symbolic links..."
+# Copy network-volume ComfyUI resources into installed ComfyUI
+echo "worker-comfyui: Copying custom_nodes from Network Volume..."
 
-ln -sf /runpod-volume/ComfyUI/custom_nodes /comfyui/custom_nodes/custom_nodes
-ln -sf /runpod-volume/ComfyUI/output       /comfyui/output
+# Copy all custom_nodes from network volume to local directory
+if [ -d "/runpod-volume/ComfyUI/custom_nodes" ]; then
+    echo "ls -la /runpod-volume/ComfyUI/custom_nodes"
+    ls -la /runpod-volume/ComfyUI/custom_nodes/
+    
+    # Remove any existing symlinks or directories that might conflict
+    rm -rf /comfyui/custom_nodes/custom_nodes
+    
+    # Copy all custom nodes
+    cp -r /runpod-volume/ComfyUI/custom_nodes/* /comfyui/custom_nodes/ 2>/dev/null || echo "worker-comfyui: No files to copy or copy failed"
+    
+    echo "worker-comfyui: Custom nodes copied successfully"
+    echo "ls -la /comfyui/custom_nodes/"
+    ls -la /comfyui/custom_nodes/
+else
+    echo "worker-comfyui: No custom_nodes directory found in Network Volume"
+fi
 
-# Verify links were created
-# echo "worker-comfyui: Verifying symbolic links..."
-# ls -la /comfyui/models || echo "ERROR: /comfyui/models link failed"
-ls -la /comfyui/custom_nodes/custom_nodes || echo "ERROR: /comfyui/custom_nodes/custom_nodes link failed"
+# Link output directory
+echo "worker-comfyui: Linking output directory..."
+ln -sf /runpod-volume/ComfyUI/output /comfyui/output
+
+echo "worker-comfyui: Verifying setup..."
+echo "/comfyui/custom_nodes/."
+ls -la /comfyui/custom_nodes/ || echo "ERROR: /comfyui/custom_nodes directory check failed"
+echo "/comfyui/output"
 ls -la /comfyui/output || echo "ERROR: /comfyui/output link failed"
 # ─────────────────────────────────────────────────────────────
 

@@ -12,4 +12,11 @@ runpod_worker_comfy:
   unet: unet/
   diffusion_models: diffusion_models/
   text_encoders: text_encoders/
-  output: /runpod-volume/ComfyUI/output/
+  diffusers: diffusers/
+  gligen: gligen/
+  hypernetworks: hypernetworks/
+  photomaker: photomaker/
+  pulid: pulid/
+  style_models: style_models/
+  vae_approx: vae_approx/
+  wget-log: wget-log/
