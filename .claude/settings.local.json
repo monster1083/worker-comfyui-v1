@@ -3,7 +3,12 @@
     "allow": [
       "mcp__brave-search__brave_web_search",
       "Bash(find:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:docs.comfy.org)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.runpod.io)"
     ],
     "deny": []
   }

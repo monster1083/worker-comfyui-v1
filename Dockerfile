@@ -75,6 +75,9 @@ WORKDIR /
 # Install Python runtime dependencies for the handler
 RUN uv pip install runpod requests websocket-client
 
+# Install common dependencies for custom nodes
+RUN uv pip install opencv-python gguf numba piexif nunchaku
+
 # Add application code and scripts
 ADD src/start.sh handler.py test_input.json ./
 RUN chmod +x /start.sh
