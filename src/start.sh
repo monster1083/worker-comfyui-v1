@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash 
 
 # ─────────────────────────────────────────────────────────────
-# Debug: Check if storage paths exist
+# Debug: Check if storage paths exist (test)
 echo "worker-comfyui: Checking storage paths..."
 
 echo "ls -la /runpod-volume/"
