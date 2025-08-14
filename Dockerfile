@@ -18,6 +18,7 @@ ENV PIP_PREFER_BINARY=1
 ENV PYTHONUNBUFFERED=1
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
+ENV PIP_NO_CACHE_DIR=1
 
 # NVIDIA 저장소 비활성화 (문제 회피)
 RUN rm -f /etc/apt/sources.list.d/cuda*.list /etc/apt/sources.list.d/nvidia*.list || true
@@ -26,6 +27,9 @@ RUN rm -f /etc/apt/sources.list.d/cuda*.list /etc/apt/sources.list.d/nvidia*.lis
 RUN apt-get update && apt-get install -y \
     python3.12 \
     python3.12-venv \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential g++ gcc make pkg-config cmake ninja-build \
+    python3.12 python3.12-venv python3.12-dev \
     git \
     wget \
     libgl1 \
@@ -50,7 +54,10 @@ RUN wget -qO- https://astral.sh/uv/install.sh | sh \
 ENV PATH="/opt/venv/bin:${PATH}"
 
 # Install comfy-cli + dependencies needed by it to install ComfyUI
-RUN uv pip install comfy-cli pip setuptools wheel
+RUN uv pip install comfy-cli pip setuptools wheel \
+    && uv pip install "numpy<2" cython \
+    && rm -rf /root/.cache/uv /root/.cache/pip
+
 # Install ComfyUI
 RUN if [ -n "${CUDA_VERSION_FOR_COMFY}" ]; then \
       /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" --cuda-version "${CUDA_VERSION_FOR_COMFY}" --nvidia; \
@@ -73,13 +80,14 @@ ADD src/extra_model_paths.yaml ./
 WORKDIR /
 
 # Install Python runtime dependencies for the handler
-RUN uv pip install runpod requests websocket-client
+RUN uv pip install runpod requests websocket-client \
+    && rm -rf /root/.cache/uv /root/.cache/pip
 
 # Copy and install common dependencies for custom nodes
 COPY requirements-custom-nodes.txt /tmp/requirements-custom-nodes.txt
 RUN uv pip install -r /tmp/requirements-custom-nodes.txt \
-&& rm -rf /root/.cache/uv /root/.cache/pip \
-&& find /opt/venv -type d -name '__pycache__' -prune -exec rm -rf {} +
+    && rm -rf /root/.cache/uv /root/.cache/pip \
+    && find /opt/venv -type d -name '__pycache__' -prune -exec rm -rf {} +
 
 # Add application code and scripts
 ADD src/start.sh handler.py test_input.json ./

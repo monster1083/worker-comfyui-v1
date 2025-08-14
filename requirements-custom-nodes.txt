@@ -27,6 +27,6 @@ transformers
 
 # pandas
 
-
 blend_modes
 segment_anything
+insightface
