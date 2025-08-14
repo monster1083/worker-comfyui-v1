@@ -5,18 +5,23 @@ runpod_worker_comfy:
   clip_vision: clip_vision/
   configs: configs/
   controlnet: controlnet/
-  embeddings: embeddings/
-  loras: loras/
-  upscale_models: upscale_models/
-  vae: vae/
-  unet: unet/
-  diffusion_models: diffusion_models/
-  text_encoders: text_encoders/
   diffusers: diffusers/
+  diffusion_models: diffusion_models/
+  dreamo: dreamo/
+  embeddings: embeddings/
+  facexlib: facexlib/
   gligen: gligen/
   hypernetworks: hypernetworks/
+  insightface: insightface/
+  loras: loras/
   photomaker: photomaker/
   pulid: pulid/
+  rembg: rembg/
   style_models: style_models/
+  text_encoders: text_encoders/
+  unet: unet/
+  upscale_models: upscale_models/
+  vae: vae/
   vae_approx: vae_approx/
   wget-log: wget-log/
+  
