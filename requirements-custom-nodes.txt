@@ -18,12 +18,37 @@ huggingface_hub
 # Additional packages that might be needed by various custom nodes
 # (uncomment as needed)
 transformers
-# diffusers
-# matplotlib
-# pillow
+
+
+
 # requests
 # websocket-client
 # lark
 # scipy
-# numpy
 # pandas
+
+
+numpy
+pillow
+torch
+matplotlib
+Scipy
+scikit_image
+scikit_learn
+opencv-contrib-python
+pymatting
+timm
+colour-science
+
+blend_modes
+
+loguru
+litelama
+insightface
+diffusers
+pymunk
+
+pywt
+segment_anything
+webcolors
+facexlib
