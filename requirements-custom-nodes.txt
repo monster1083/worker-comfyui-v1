@@ -24,7 +24,7 @@ transformers
 # requests
 # websocket-client
 # lark
-# scipy
+
 # pandas
 
 
@@ -33,21 +33,22 @@ pillow
 torch
 matplotlib
 Scipy
-scikit_image
 scikit_learn
 opencv-contrib-python
 pymatting
 timm
 colour-science
-
 blend_modes
-
 loguru
+
+
 litelama
-insightface
 diffusers
 pymunk
 
 segment_anything
 webcolors
 facexlib
+
+opencv-python-headless
+
