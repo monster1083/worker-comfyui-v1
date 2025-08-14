@@ -23,23 +23,16 @@ ENV PIP_NO_CACHE_DIR=1
 # NVIDIA 저장소 비활성화 (문제 회피)
 RUN rm -f /etc/apt/sources.list.d/cuda*.list /etc/apt/sources.list.d/nvidia*.list || true
 
-# Install Python, git and other necessary tools
-RUN apt-get update && apt-get install -y \
-    python3.12 \
-    python3.12-venv
+# Install Python, toolchain and runtime libs
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential g++ gcc make pkg-config cmake ninja-build \
     python3.12 python3.12-venv python3.12-dev \
-    git \
-    wget \
-    libgl1 \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender1 \
+    git wget \
+    libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 \
     ffmpeg \
-    && ln -sf /usr/bin/python3.12 /usr/bin/python \
-    && ln -sf /usr/bin/pip3 /usr/bin/pip
+ && ln -sf /usr/bin/python3.12 /usr/bin/python \
+ && ln -sf /usr/bin/pip3 /usr/bin/pip \
+ && rm -rf /var/lib/apt/lists/*
 
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
@@ -56,6 +49,8 @@ ENV PATH="/opt/venv/bin:${PATH}"
 # Install comfy-cli + dependencies needed by it to install ComfyUI
 RUN uv pip install comfy-cli pip setuptools wheel \
     && uv pip install "numpy<2" cython \
+    && uv pip install "onnxruntime-gpu>=1.17,<2" \
+    && uv pip install "insightface==0.7.3" \
     && rm -rf /root/.cache/uv /root/.cache/pip
 
 # Install ComfyUI
