@@ -48,7 +48,6 @@ insightface
 diffusers
 pymunk
 
-pywt
 segment_anything
 webcolors
 facexlib
