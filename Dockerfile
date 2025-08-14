@@ -26,7 +26,7 @@ RUN rm -f /etc/apt/sources.list.d/cuda*.list /etc/apt/sources.list.d/nvidia*.lis
 # Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
     python3.12 \
-    python3.12-venv \
+    python3.12-venv
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential g++ gcc make pkg-config cmake ninja-build \
     python3.12 python3.12-venv python3.12-dev \
