@@ -77,7 +77,9 @@ RUN uv pip install runpod requests websocket-client
 
 # Copy and install common dependencies for custom nodes
 COPY requirements-custom-nodes.txt /tmp/requirements-custom-nodes.txt
-RUN uv pip install -r /tmp/requirements-custom-nodes.txt
+RUN uv pip install -r /tmp/requirements-custom-nodes.txt \
+&& rm -rf /root/.cache/uv /root/.cache/pip \
+&& find /opt/venv -type d -name '__pycache__' -prune -exec rm -rf {} +
 
 # Add application code and scripts
 ADD src/start.sh handler.py test_input.json ./
