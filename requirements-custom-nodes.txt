@@ -28,27 +28,5 @@ transformers
 # pandas
 
 
-numpy
-pillow
-torch
-matplotlib
-Scipy
-scikit_learn
-opencv-contrib-python
-pymatting
-timm
-colour-science
 blend_modes
-loguru
-
-
-litelama
-diffusers
-pymunk
-
 segment_anything
-webcolors
-facexlib
-
-opencv-python-headless
-
