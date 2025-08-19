@@ -37,3 +37,6 @@ insightface==0.7.3
 facexlib
 ftfy
 timm
+
+python-dotenv==1.0.1
+boto3==1.34.32
