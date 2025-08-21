@@ -40,8 +40,8 @@ RUN echo "PATH: $PATH" && \
     comfy --help
 
 # comfy 명령어가 제대로 설치되었는지 확인 후 실행
-RUN /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" < /dev/null || \
-    echo "y" | /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
+RUN /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" --nvidia < /dev/null || \
+    echo "y" | /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" --nvidia
 
 # RUN /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
 
