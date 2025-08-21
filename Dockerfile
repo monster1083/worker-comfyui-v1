@@ -34,7 +34,16 @@ RUN uv pip install "insightface==0.7.3"
 RUN rm -rf /root/.cache/uv /root/.cache/pip
 
 # Install ComfyUI
-RUN /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
+RUN echo "PATH: $PATH" && \
+    echo "COMFYUI_VERSION: ${COMFYUI_VERSION}" && \
+    which comfy && \
+    comfy --help
+
+# comfy 명령어가 제대로 설치되었는지 확인 후 실행
+RUN /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" < /dev/null || \
+    echo "y" | /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
+
+# RUN /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
 
 # Change working directory to ComfyUI
 WORKDIR /comfyui
