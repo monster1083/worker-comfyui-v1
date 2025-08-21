@@ -16,21 +16,8 @@ jobs:
 
       - name: Free up disk space (20~40GB)
         run: |
-          sudo rm -rf /usr/local/lib/android || true
-          sudo rm -rf /usr/share/dotnet || true
-          sudo rm -rf /opt/ghc || true
-          sudo rm -rf /opt/hostedtoolcache || true
-          sudo rm -rf /usr/local/share/boost || true
-          sudo rm -rf /usr/local/graalvm || true
-          sudo rm -rf /usr/local/share/chromium || true
-          sudo rm -rf /usr/local/share/chrome_driver || true
-          sudo apt-get remove -y '^dotnet-.*' || true
-          sudo apt-get remove -y '^llvm-.*' || true
-          sudo apt-get remove -y 'php.*' || true
-          sudo apt-get autoremove -y
-          sudo apt-get clean
-          docker system prune -af --volumes
-          df -h
+          chmod +x ./scripts/free_disk_space.sh
+          ./scripts/free_disk_space.sh
 
 
       - name: Set up Docker Buildx
