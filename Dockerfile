@@ -20,7 +20,7 @@ ENV PIP_NO_CACHE_DIR=1
 # Install necessary Python dependencies (uv, onnxruntime, etc.)
 RUN pip install uv \
     && uv pip install comfy-cli pip setuptools wheel \
-    && uv pip install "onnxruntime-gpu>=1.17,<2" \
+    && uv pip install "onnxruntime-gpu==1.18.0" \
     && uv pip install "insightface==0.7.3" \
     && rm -rf /root/.cache/uv /root/.cache/pip
 
