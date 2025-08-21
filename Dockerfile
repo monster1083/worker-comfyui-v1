@@ -2,7 +2,7 @@
 ARG BASE_IMAGE=runpod/pytorch:2.8.0-py3.11-cuda12.8.1-cudnn-devel-ubuntu22.04
 
 # Stage 1: Base image with common dependencies
-FROM ${BASE_IMAGE} AS base
+FROM ${BASE_IMAGE} AS builder
 
 # Build arguments for this stage (defaults provided by docker-bake.hcl)
 ARG COMFYUI_VERSION=latest
@@ -74,7 +74,25 @@ COPY scripts/comfy-manager-set-mode.sh /usr/local/bin/comfy-manager-set-mode
 RUN chmod +x /usr/local/bin/comfy-manager-set-mode
 
 # Set the default command to run when starting the container
-CMD ["/start.sh"]
+# CMD ["/start.sh"]
 
 # Stage 3: Final image
-FROM base AS final
+# FROM base AS final
+FROM ${BASE_IMAGE} AS final
+
+# 환경변수만 복사
+ENV PATH="/opt/venv/bin:${PATH}"
+ENV PIP_NO_INPUT=1
+
+# 필수 항목들 복사
+COPY --from=builder /opt/venv /opt/venv
+COPY --from=builder /comfyui /comfyui
+COPY --from=builder /start.sh /handler.py /test_input.json ./
+COPY --from=builder /usr/local/bin/comfy-node-install /usr/local/bin/
+COPY --from=builder /usr/local/bin/comfy-manager-set-mode /usr/local/bin/
+
+# 실행 권한
+RUN chmod +x /start.sh /usr/local/bin/comfy-node-install /usr/local/bin/comfy-manager-set-mode
+
+WORKDIR /
+CMD ["/start.sh"]
