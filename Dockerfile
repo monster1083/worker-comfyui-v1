@@ -53,6 +53,8 @@ WORKDIR /
 RUN uv pip install runpod requests websocket-client \
     && rm -rf /root/.cache/uv /root/.cache/pip
 
+RUN uv pip install "numpy<2.0"
+
 # Copy and install common dependencies for custom nodes
 COPY requirements-custom-nodes.txt /tmp/requirements-custom-nodes.txt
 RUN uv pip install -r /tmp/requirements-custom-nodes.txt \

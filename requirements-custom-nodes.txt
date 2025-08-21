@@ -29,9 +29,9 @@ piexif
 
 blend_modes
 segment_anything
-# numpy<2
+numpy<2
 cython
-onnxruntime-gpu==1.18.0
+onnxruntime-gpu==1.18.1
 insightface==0.7.3
 
 facexlib
