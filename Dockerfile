@@ -24,7 +24,7 @@ RUN uv venv /opt/venv
 ENV PATH="/opt/venv/bin:${PATH}"
 
 # comfy-cli와 기본 패키지를 먼저 설치
-RUN uv pip install comfy-cli setuptools wheel
+RUN uv pip install comfy-cli pip setuptools wheel
 
 # onnxruntime-gpu와 insightface를 설치
 RUN uv pip install "onnxruntime-gpu==1.18.0"
