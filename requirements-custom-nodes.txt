@@ -31,7 +31,6 @@ blend_modes
 segment_anything
 numpy<2
 cython
-onnxruntime
 onnxruntime-gpu>=1.17,<2
 insightface==0.7.3
 
