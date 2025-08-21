@@ -20,16 +20,12 @@ ENV PIP_NO_CACHE_DIR=1
 # uv를 먼저 설치
 RUN pip install uv
 # 가상 환경을 만들고 활성화
-RUN uv venv /opt/venv
+# RUN uv venv /opt/venv
+RUN uv venv --system-site-packages /opt/venv
 ENV PATH="/opt/venv/bin:${PATH}"
 
 # comfy-cli와 기본 패키지를 먼저 설치
 RUN uv pip install comfy-cli pip setuptools wheel
-
-# onnxruntime-gpu와 insightface를 설치
-RUN uv pip install "onnxruntime-gpu==1.18.0"
-RUN uv pip install "insightface==0.7.3"
-
 # 캐시 제거는 한 번만 수행
 RUN rm -rf /root/.cache/uv /root/.cache/pip
 
@@ -40,7 +36,8 @@ RUN echo "PATH: $PATH" && \
     comfy --help
 
 # comfy 명령어가 제대로 설치되었는지 확인 후 실행
-RUN /usr/bin/yes | /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
+RUN /usr/bin/yes | /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" && \
+    rm -rf /comfyui/.git /tmp/* /var/tmp/* /root/.cache/*
 # RUN /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
 
 # Change working directory to ComfyUI
@@ -80,21 +77,5 @@ RUN chmod +x /usr/local/bin/comfy-manager-set-mode
 # Set the default command to run when starting the container
 CMD ["/start.sh"]
 
-# Stage 2: Download models
-FROM base AS downloader
-
-ARG HUGGINGFACE_ACCESS_TOKEN
-# Set default model type if none is provided
-ARG MODEL_TYPE=flux1-dev-fp8
-
-# Change working directory to ComfyUI
-WORKDIR /comfyui
-
-# Create necessary directories upfront
-RUN mkdir -p models/checkpoints models/vae models/unet models/clip
-
 # Stage 3: Final image
 FROM base AS final
-
-# Copy models from stage 2 to the final image
-COPY --from=downloader /comfyui/models /comfyui/models
