@@ -1,23 +1,23 @@
 # Custom nodes dependencies
 # Core dependencies
-opencv-python
+# opencv-python
 gguf
 numba
 piexif
 
 # Machine learning and scientific computing
-scikit-image
-accelerate
+# scikit-image
+# accelerate
 
 # Utilities
-simpleeval
+# simpleeval
 
 # Hugging Face compatibility fix
-huggingface_hub
+# huggingface_hub
 
 # Additional packages that might be needed by various custom nodes
 # (uncomment as needed)
-transformers
+# transformers
 
 
 
@@ -29,7 +29,7 @@ transformers
 
 blend_modes
 segment_anything
-numpy<2
+# numpy<2
 cython
 onnxruntime-gpu==1.18.0
 insightface==0.7.3

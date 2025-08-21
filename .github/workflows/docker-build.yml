@@ -19,10 +19,17 @@ jobs:
           sudo rm -rf /usr/local/lib/android || true
           sudo rm -rf /usr/share/dotnet || true
           sudo rm -rf /opt/ghc || true
-          sudo rm -rf /opt/hostedtoolcache/CodeQL || true
-          docker system df || true
-          sudo docker system prune -af
+          sudo rm -rf /opt/hostedtoolcache || true
+          sudo rm -rf /usr/local/share/boost || true
+          sudo rm -rf /usr/local/graalvm || true
+          sudo rm -rf /usr/local/share/chromium || true
+          sudo rm -rf /usr/local/share/chrome_driver || true
+          sudo apt-get remove -y '^dotnet-.*' || true
+          sudo apt-get remove -y '^llvm-.*' || true
+          sudo apt-get remove -y 'php.*' || true
+          sudo apt-get autoremove -y
           sudo apt-get clean
+          docker system prune -af --volumes
           df -h
 
 
