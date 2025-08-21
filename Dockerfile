@@ -62,6 +62,10 @@ RUN uv pip install -r /tmp/requirements-custom-nodes.txt \
 ADD src/start.sh handler.py test_input.json ./
 RUN chmod +x /start.sh
 
+# Copy helper script to switch Manager network mode at container start
+COPY scripts/comfy-manager-set-mode.sh /usr/local/bin/comfy-manager-set-mode
+RUN chmod +x /usr/local/bin/comfy-manager-set-mode
+
 # Prevent pip from asking for confirmation during uninstall steps in custom nodes
 ENV PIP_NO_INPUT=1
 
