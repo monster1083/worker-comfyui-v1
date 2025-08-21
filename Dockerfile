@@ -36,8 +36,7 @@ RUN echo "PATH: $PATH" && \
     comfy --help
 
 # comfy 명령어가 제대로 설치되었는지 확인 후 실행
-RUN /usr/bin/yes | /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" && \
-    rm -rf /comfyui/.git /tmp/* /var/tmp/* /root/.cache/*
+RUN /usr/bin/yes | /opt/venv/bin/comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
 # RUN /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
 
 # Change working directory to ComfyUI
