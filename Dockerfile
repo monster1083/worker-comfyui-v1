@@ -50,6 +50,7 @@ ENV PATH="/opt/venv/bin:${PATH}"
 RUN uv pip install comfy-cli pip setuptools wheel \
     && uv pip install "numpy<2" cython \
     && uv pip install "onnxruntime-gpu>=1.17,<2" \
+    && uv pip install "onnxruntime" \
     && uv pip install "insightface==0.7.3" \
     && rm -rf /root/.cache/uv /root/.cache/pip
 
