@@ -17,12 +17,21 @@ ENV PYTHONUNBUFFERED=1
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 ENV PIP_NO_CACHE_DIR=1
 
-# Install necessary Python dependencies (uv, onnxruntime, etc.)
-RUN pip install uv \
-    && uv pip install comfy-cli pip setuptools wheel \
-    && uv pip install "onnxruntime-gpu==1.18.0" \
-    && uv pip install "insightface==0.7.3" \
-    && rm -rf /root/.cache/uv /root/.cache/pip
+# uv를 먼저 설치
+RUN pip install uv
+# 가상 환경을 만들고 활성화
+RUN uv venv /opt/venv
+ENV PATH="/opt/venv/bin:${PATH}"
+
+# comfy-cli와 기본 패키지를 먼저 설치
+RUN uv pip install comfy-cli setuptools wheel
+
+# onnxruntime-gpu와 insightface를 설치
+RUN uv pip install "onnxruntime-gpu==1.18.0"
+RUN uv pip install "insightface==0.7.3"
+
+# 캐시 제거는 한 번만 수행
+RUN rm -rf /root/.cache/uv /root/.cache/pip
 
 # Install ComfyUI
 RUN /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
