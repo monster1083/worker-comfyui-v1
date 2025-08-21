@@ -6,9 +6,6 @@ FROM ${BASE_IMAGE} AS base
 
 # Build arguments for this stage (defaults provided by docker-bake.hcl)
 ARG COMFYUI_VERSION=latest
-ARG CUDA_VERSION_FOR_COMFY
-ARG ENABLE_PYTORCH_UPGRADE
-ARG PYTORCH_INDEX_URL
 
 # Prevents prompts from packages asking for user input during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -20,51 +17,15 @@ ENV PYTHONUNBUFFERED=1
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 ENV PIP_NO_CACHE_DIR=1
 
-# NVIDIA 저장소 비활성화 (문제 회피)
-RUN rm -f /etc/apt/sources.list.d/cuda*.list /etc/apt/sources.list.d/nvidia*.list || true
-
-# Install Python, toolchain and runtime libs
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential g++ gcc make pkg-config cmake ninja-build \
-    python3.12 python3.12-venv python3.12-dev \
-    git wget \
-    libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 \
-    ffmpeg \
- && ln -sf /usr/bin/python3.12 /usr/bin/python \
- && ln -sf /usr/bin/pip3 /usr/bin/pip \
- && rm -rf /var/lib/apt/lists/*
-
-# Clean up to reduce image size
-RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
-
-# Install uv (latest) using official installer and create isolated venv
-RUN wget -qO- https://astral.sh/uv/install.sh | sh \
-    && ln -s /root/.local/bin/uv /usr/local/bin/uv \
-    && ln -s /root/.local/bin/uvx /usr/local/bin/uvx \
-    && uv venv /opt/venv
-
-# Use the virtual environment for all subsequent commands
-ENV PATH="/opt/venv/bin:${PATH}"
-
-# Install comfy-cli + dependencies needed by it to install ComfyUI
-RUN uv pip install comfy-cli pip setuptools wheel \
-    && uv pip install "numpy<2" cython \
+# Install necessary Python dependencies (uv, onnxruntime, etc.)
+RUN pip install uv \
+    && uv pip install comfy-cli pip setuptools wheel \
     && uv pip install "onnxruntime-gpu>=1.17,<2" \
-    && uv pip install "onnxruntime" \
     && uv pip install "insightface==0.7.3" \
     && rm -rf /root/.cache/uv /root/.cache/pip
 
 # Install ComfyUI
-RUN if [ -n "${CUDA_VERSION_FOR_COMFY}" ]; then \
-      /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" --cuda-version "${CUDA_VERSION_FOR_COMFY}" --nvidia; \
-    else \
-      /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}" --nvidia; \
-    fi
-
-# Upgrade PyTorch if needed (for newer CUDA versions)
-RUN if [ "$ENABLE_PYTORCH_UPGRADE" = "true" ]; then \
-      uv pip install --force-reinstall torch torchvision torchaudio --index-url ${PYTORCH_INDEX_URL}; \
-    fi
+RUN /usr/bin/yes | comfy --workspace /comfyui install --version "${COMFYUI_VERSION}"
 
 # Change working directory to ComfyUI
 WORKDIR /comfyui
