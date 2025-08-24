@@ -21,6 +21,10 @@ fi
 
 
 # Check if /runpod-volume/ComfyUI/models/insightface is mounted
+echo "----------------------/runpod-volume/ComfyUI/models----------------------------"
+echo "ls -la /runpod-volume/ComfyUI/models"
+echo "ls -la /runpod-volume/ComfyUI/models/insightface"
+
 if [ -d " /runpod-volume/ComfyUI/models/insightface" ]; then
     echo "/runpod-volume/ComfyUI/models/insightface directory exists." 
     
