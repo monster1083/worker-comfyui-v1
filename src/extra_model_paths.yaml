@@ -12,7 +12,6 @@ runpod_worker_comfy:
   facexlib: facexlib/
   gligen: gligen/
   hypernetworks: hypernetworks/
-  insightface: insightface/
   loras: loras/
   photomaker: photomaker/
   pulid: pulid/
@@ -24,4 +23,3 @@ runpod_worker_comfy:
   vae: vae/
   vae_approx: vae_approx/
   wget-log: wget-log/
-  

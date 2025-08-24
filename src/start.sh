@@ -1,17 +1,6 @@
 #!/usr/bin/env bash 
 
 # ─────────────────────────────────────────────────────────────
-# Debug: Check if storage paths exist (test)
-echo "worker-comfyui: Checking storage paths..."
-
-echo "ls -la /runpod-volume/"
-ls -la /runpod-volume/ || echo "ERROR: /runpod-volume not found"
-echo "ls -la /runpod-volume/ComfyUI"
-ls -la /runpod-volume/ComfyUI/ || echo "ERROR: /runpod-volume/ComfyUI not found"
-
-# Copy network-volume ComfyUI resources into installed ComfyUI
-echo "worker-comfyui: Copying custom_nodes from Network Volume..."
-
 # Copy all custom_nodes from network volume to local directory
 if [ -d "/runpod-volume/ComfyUI/custom_nodes" ]; then
     echo "ls -la /runpod-volume/ComfyUI/custom_nodes"
@@ -29,6 +18,23 @@ if [ -d "/runpod-volume/ComfyUI/custom_nodes" ]; then
 else
     echo "worker-comfyui: No custom_nodes directory found in Network Volume"
 fi
+
+
+# Check if /runpod-volume/ComfyUI/models/insightface is mounted
+if [ -d " /runpod-volume/ComfyUI/models/insightface" ]; then
+    echo "/runpod-volume/ComfyUI/models/insightface directory exists." 
+    
+    # Create a soft link to /comfyi/models/insightface if it doesn't already exist 목적지에 없으면,
+    if [ ! -L "/comfyui/models/insightface" ]; then
+        ln -s /runpod-volume/ComfyUI/models/insightface /comfyi/models/insightface 
+        echo "Created a soft link to /comfyi/models/insightface."
+    else
+        echo "Soft link already exists."
+    fi 
+else
+    echo "/runpod-volume/ComfyUI/models/insightface directory does not exist."
+fi
+
 
 # Link output directory
 echo "worker-comfyui: Linking output directory..."
