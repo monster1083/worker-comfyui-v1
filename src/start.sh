@@ -27,7 +27,7 @@ ls -la /runpod-volume/ComfyUI/models/
 echo "ls -la /runpod-volume/ComfyUI/models/insightface"
 ls -la /runpod-volume/ComfyUI/models/insightface/
 
-if [ -d " /runpod-volume/ComfyUI/models/insightface" ]; then
+if [ -d "/runpod-volume/ComfyUI/models/insightface" ]; then
     echo "/runpod-volume/ComfyUI/models/insightface directory exists." 
     
     # Create a soft link to /comfyi/models/insightface if it doesn't already exist 목적지에 없으면,
